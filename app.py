@@ -21,6 +21,8 @@ time_since_signup = st.number_input("Time Since Signup (seconds)", min_value=0)
 hour_of_day = st.slider("Hour of Day", 0, 23, 12)
 day_of_week = st.slider("Day of Week (0=Mon, 6=Sun)", 0, 6, 0)
 
+day_of_week = 0
+
 total_transactions = st.number_input("Total Transactions", min_value=0)
 transactions_last_24h = st.number_input("Transactions Last 24h", min_value=0)
 transactions_last_7d = st.number_input("Transactions Last 7 Days", min_value=0)
@@ -102,8 +104,8 @@ NUMERIC_COLUMNS = [
 
 X[NUMERIC_COLUMNS] = scaler.transform(X[NUMERIC_COLUMNS])
 
-st.subheader("Model Input (After Scaling)")
-st.dataframe(X)
+# st.subheader("Model Input (After Scaling)")
+# st.dataframe(X)
 
 
 # -----------------------------
@@ -112,7 +114,7 @@ st.dataframe(X)
 if st.button("Check Fraud"):
     prob = model.predict_proba(X)[0][1]
 
-    if prob > 0.587:
+    if prob > 0.587: # we found this number using ROC analysis please refer to threshold.py
         st.error(f"🚨 Fraud Detected\n\nProbability : {prob:.2f}")
     else:
         st.success(f"✅ Legitimate Transaction\n\nProbability: {prob:.2f}")
