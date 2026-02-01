@@ -8,7 +8,7 @@ import joblib
 model = joblib.load("models/xgb_fraud_best.pkl")
 scaler = joblib.load("models/scaler.pkl")
 
-st.title("E-Commerce Fraud Detection System")
+st.title("E-Commerce Fraud Detection SystemSSSS")
 st.markdown("Enter transaction details to check fraud risk.")
 
 # -----------------------------
