@@ -113,6 +113,6 @@ if st.button("Check Fraud"):
     prob = model.predict_proba(X)[0][1]
 
     if prob > 0.587:
-        st.error(f"🚨 Fraud Detected\n\nProbability: {prob:.2f}")
+        st.error(f"🚨 Fraud Detected\n\nProbability : {prob:.2f}")
     else:
         st.success(f"✅ Legitimate Transaction\n\nProbability: {prob:.2f}")
