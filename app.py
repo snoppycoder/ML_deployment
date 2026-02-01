@@ -2,11 +2,13 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Load trained model
+# -----------------------------
+# LOAD MODEL + SCALER
+# -----------------------------
 model = joblib.load("models/xgb_fraud_best.pkl")
+scaler = joblib.load("models/scaler.pkl")
 
 st.title("E-Commerce Fraud Detection System")
-
 st.markdown("Enter transaction details to check fraud risk.")
 
 # -----------------------------
@@ -88,12 +90,29 @@ if sex == "M":
     X['sex_M'] = 1
 
 # -----------------------------
+# SCALING (CRITICAL)
+# -----------------------------
+NUMERIC_COLUMNS = [
+    'purchase_value', 'age', 'hour_of_day', 'day_of_week',
+    'time_since_signup', 'total_transactions',
+    'transactions_last_24h', 'transactions_last_7d',
+    'transactions_last_30d', 'velocity_last_24h',
+    'avg_purchase_value', 'purchase_value_deviation'
+]
+
+X[NUMERIC_COLUMNS] = scaler.transform(X[NUMERIC_COLUMNS])
+
+st.subheader("Model Input (After Scaling)")
+st.dataframe(X)
+
+
+# -----------------------------
 # PREDICTION
 # -----------------------------
 if st.button("Check Fraud"):
     prob = model.predict_proba(X)[0][1]
 
-    if prob > 0.5:
+    if prob > 0.587:
         st.error(f"🚨 Fraud Detected\n\nProbability: {prob:.2f}")
     else:
         st.success(f"✅ Legitimate Transaction\n\nProbability: {prob:.2f}")
